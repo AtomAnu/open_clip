@@ -88,9 +88,10 @@ def train_one_epoch(model, data, loss, epoch, optimizer, scaler, scheduler, dist
         if not args.skip_scheduler:
             scheduler(step)
 
-        images, texts, raw_texts = batch
+        images, texts, raw_texts, related_texts = batch
 
         print(raw_texts)
+        print(related_texts)
 
         images = images.to(device=device, dtype=cast_dtype, non_blocking=True)
         texts = texts.to(device=device, non_blocking=True)
@@ -106,7 +107,7 @@ def train_one_epoch(model, data, loss, epoch, optimizer, scaler, scheduler, dist
                     with torch.no_grad():
                         dist_model_out = dist_model(images, texts)
                     model_out.update({f'dist_{k}' : v for k, v in dist_model_out.items()})
-                losses = loss(**model_out, output_dict=True)
+                losses = loss(**model_out, raw_texts=raw_texts, related_texts=related_texts, output_dict=True)
 
                 total_loss = sum(losses.values())
                 losses["loss"] = total_loss
