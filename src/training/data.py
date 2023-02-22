@@ -67,7 +67,7 @@ class CsvMultilabelDataset(Dataset):
     def __getitem__(self, idx):
         images = self.transforms(Image.open(str(self.images[idx])))
         texts = self.tokenize([str(self.captions[idx])])[0]
-        return images, texts, str(self.captions[idx]), set(self.related_captions[idx])
+        return images, texts, str(self.captions[idx]), self.related_captions[idx]
 
 
 class SharedEpoch:

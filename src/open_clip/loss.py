@@ -160,9 +160,9 @@ class ClipMultilabelLoss(nn.Module):
 
             labels = torch.zeros((num_logits, num_logits), device=device, dtype=torch.long)
 
-            for i, text_set in enumerate(related_texts):
+            for i, text_list in enumerate(related_texts):
 
-                label_list = [1 if text in text_set else 0 for text in raw_texts]
+                label_list = [1 if text in set(text_list) else 0 for text in raw_texts]
 
                 labels[i, :] = torch.tensor(label_list)
 
