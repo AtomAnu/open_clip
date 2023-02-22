@@ -466,7 +466,7 @@ def get_csv_dataset(args, preprocess_fn, is_train, epoch=0, tokenizer=None):
     #     tokenizer=tokenizer
     # )
 
-    dataset = CsvDataset(
+    dataset = CsvMultilabelDataset(
         input_filename,
         preprocess_fn,
         img_key=args.csv_img_key,
