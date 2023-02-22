@@ -89,10 +89,7 @@ def train_one_epoch(model, data, loss, epoch, optimizer, scaler, scheduler, dist
             scheduler(step)
 
         images, texts, raw_texts, related_texts = batch
-
-        print(raw_texts)
-        print(related_texts)
-
+        
         images = images.to(device=device, dtype=cast_dtype, non_blocking=True)
         texts = texts.to(device=device, non_blocking=True)
 
