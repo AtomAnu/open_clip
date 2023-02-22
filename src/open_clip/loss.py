@@ -200,8 +200,8 @@ class ClipMultilabelLoss(nn.Module):
         labels = self.get_ground_truth(device, logits_per_image.shape[0], raw_texts, related_texts)
 
         total_loss = (
-                 F.binary_cross_entropy_with_logits(logits_per_image, labels) +
-                 F.binary_cross_entropy_with_logits(logits_per_text, labels.T)
+                 F.binary_cross_entropy_with_logits(logits_per_image, labels.float()) +
+                 F.binary_cross_entropy_with_logits(logits_per_text, labels.T.float())
          ) / 2
 
         return {"contrastive_loss": total_loss} if output_dict else total_loss
