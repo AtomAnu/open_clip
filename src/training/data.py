@@ -48,6 +48,27 @@ class CsvDataset(Dataset):
         return images, texts
 
 
+class CsvMultilabelDataset(Dataset):
+    def __init__(self, input_filename, transforms, img_key, caption_key, sep="\t", tokenizer=None):
+        logging.debug(f'Loading csv data from {input_filename}.')
+        df = pd.read_csv(input_filename, sep=sep)
+
+        self.images = df[img_key].tolist()
+        self.captions = df[caption_key].tolist()
+        self.transforms = transforms
+        logging.debug('Done loading data.')
+
+        self.tokenize = tokenizer
+
+    def __len__(self):
+        return len(self.captions)
+
+    def __getitem__(self, idx):
+        images = self.transforms(Image.open(str(self.images[idx])))
+        texts = self.tokenize([str(self.captions[idx])])[0]
+        return images, texts, str(self.captions[idx])
+
+
 class SharedEpoch:
     def __init__(self, epoch: int = 0):
         self.shared_epoch = Value('i', epoch)
